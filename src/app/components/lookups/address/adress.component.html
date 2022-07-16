@@ -1,0 +1,100 @@
+<div class="jumbotron">
+    <h1 class="display-4 text-center">Address</h1>
+  </div>
+  
+  <!--Form For Adding New Data-->
+  <p>
+    <button type="button" class="btn btn-raised btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed" aria-controls="addDataCollapse">
+      <i class="far fa-plus-square"></i> &nbsp;
+      Add
+    </button>
+  </p>
+  
+  
+  <div id="addDataCollapse" *ngIf="!isCollapsed">
+    <div class="card">
+      <div class="card-body">
+        <form class="form-horizontal" [formGroup]="AddressDataAddForm" autocomplete="off">
+          <div class="row">
+            <div class="col-md-6 ">
+              <label class="control-label" for="addressName">Address Name<span class="text-danger">*</span></label>
+              <input id="addressName" type="text" class="form-control" formControlName="addressName">
+              <!-- Validetion-->
+              <span class="text-danger" *ngIf="AddressName?.touched && AddressName?.errors?.['required']">
+                Address Name is Required.
+              </span>
+  
+            </div>
+  
+            <div class="col-md-6" style="padding-top: 20px;">
+              <button class="btn btn-raised btn-outline-primary" type="button" (click)="insertRecord()"
+                [disabled]="AddressDataAddForm.invalid"> <i class="far fa-save"> </i> Submit</button>
+              &nbsp;
+              <button class="btn btn-danger " type="button" (click)="isCollapsed = !isCollapsed"> <i
+                  class="far fa-times-circle"> </i> Close</button>
+            </div>
+  
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <form [formGroup]="AddressDataFormEdit" autocomplete="off">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center">#</th>
+          <th class="text-center">Address Name</th>
+          <th class="text-center">Edit</th>
+          <th class="text-center">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Data of AddressDataList;index as i">
+          <td scope="row" class="text-center">{{i + 1}}</td>
+          <td class="text-center" *ngIf="!Data.isEdit">{{Data.addressName}}</td>
+          <td *ngIf="Data.isEdit">
+            <input type="hidden" formControlName="id" name="id" class="form-control"
+              [value]="Data.id">
+            <input type="text" formControlName="addressName" name="addressName" class="form-control"
+              [value]="Data.addressName">
+            <!-- Validetion-->
+            <!-- Validetion-->
+            <span class="text-danger" *ngIf="AddressNameEdit?.touched && AddressNameEdit?.errors?.['required']">
+              Address Name is Required.
+            </span>
+  
+          </td>
+  
+  
+          <td *ngIf="!Data.isEdit" class="text-center">
+            <button type="button" class="btn btn-primary " (click)="editItem(Data)" placement="top" ngbTooltip="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </td>
+          <td class="text-center align-middle display-flex" class="text-center" *ngIf="Data.isEdit">
+            <button type="button" class="btn btn-success " (click)="saveEditItem(Data)"
+              [disabled]="!AddressDataFormEdit.valid" placement="top" ngbTooltip="Edit">
+              <i class="fas fa-save"></i>
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-warning" (click)="cancelEdit()" placement="top"
+              ngbTooltip="Cancel">
+              <i class="fas fa-window-close"></i>
+            </button>
+          </td>
+          <td class="text-center">
+            <button type="button" class="btn btn-danger" (click)="onDelete(Data)" [disabled]="Data.isEdit"
+              placement="top" ngbTooltip="Delete">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="AddressDataList.length==0">
+          <td class="text-center" colspan="4">NoDataFound</td>
+        </tr>
+      </tbody>
+    </table>
+  </form>

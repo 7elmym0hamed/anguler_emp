@@ -1,0 +1,117 @@
+<div class="jumbotron">
+    <h1 class="display-4 text-center">Persons</h1>
+</div>
+
+<!--Form For Adding New Data-->
+<p>
+    <button type="button" class="btn btn-raised btn-outline-primary" (click)="AddNew(content)">
+        <i class="far fa-plus-square"></i> &nbsp; Add
+    </button>
+</p>
+
+<!-- Data Table-->
+<table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center align-middle">Person Name</th>
+        <th class="text-center align-middle">Age</th>
+        <th class="text-center align-middle">Address Name</th>
+        <th class="text-center align-middle">Edit</th>
+        <th class="text-center align-middle">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="DataList.length != 0">
+            <tr *ngFor="let item of DataList;index as i">
+                <th class="align-middle text-center" scope="row">{{i+1}}</th>
+                <th class="text-center align-middle">{{ item.personName }}</th>
+                <th class="text-center align-middle">{{ item.age }}</th>
+                <th class="text-center align-middle">{{ item.addressName }}</th>
+                <th class="text-center align-middle">
+                    <button type="button" placement="top" ngbTooltip="Edit " class="btn btn-primary " 
+                        (click)="editItem(item,content)">
+                        <i class="fas fa-edit"></i>
+                    </button>   
+                </th>
+                <th class="text-center align-middle">
+                    <button type="button" placement="top" ngbTooltip="Delete" class="btn btn-danger"
+                        (click)="onDelete(item)">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
+                </th>
+            </tr>
+        </ng-container>
+        <ng-container *ngIf="DataList.length == 0">
+            <tr>
+                <td colspan="9" class="align-middle text-center">
+                    <span class="font_bold"> NoDataFound .</span>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+
+<!-- Modal-->
+<ng-template #content let-modal>
+    <div>
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-basic-title">
+                <span *ngIf="!currentEdit">Add Person</span>
+                <span *ngIf="currentEdit">Edit Person</span>
+            </h3>
+            <button style="display: none;" type="button" class="close" aria-label="Close"
+                (click)="ResetFormAdd(); modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formAdd">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label" for="PersonName">Person Name <span
+                                class="text-danger">*</span></label>
+                        <input id="personName" type="personName" class="form-control" formControlName="personName">
+                        <span class="text-danger" *ngIf="PersonName?.touched &&PersonName?.errors?.['required']">
+                            Person Name is Required.
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label" for="age">Age <span class="text-danger">*</span></label>
+                        <input id="age" type="number" class="form-control" formControlName="age">
+                        <span class="text-danger" *ngIf="Age?.touched &&Age?.errors?.['required']">
+                            Age is Required.
+                        </span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="control-label" for="addressId">Address <span
+                                class="text-danger">*</span></label>
+                        <select class="btn btn-outline-primary dropdown-toggle" id="addressId" class="form-control"
+                            formControlName="addressId">
+                            <option value="">Select</option>
+                            <option *ngFor="let item of AddressList" value={{item.id}}>
+                                {{ item.addressName }}
+                            </option>
+                        </select>
+                        <span class="text-danger" *ngIf="AddressId?.touched && AddressId?.errors?.['required']">
+                            Address is Required.
+                        </span>
+                    </div>
+
+                </div>
+
+                <br>
+                <button type="button" class="btn btn-outline-primary" (click)="onSubmit()">
+                    <i class="far fa-save"></i> Submit
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-danger"
+                    (click)="Close(); modal.dismiss('Cross click')">
+                    <i class="far fa-times-circle"></i> Close
+                </button>
+            </form>
+        </div>
+
+    </div>
+</ng-template>

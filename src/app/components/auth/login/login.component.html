@@ -1,0 +1,31 @@
+
+<div class="container-login100">
+
+    <div class="wrap-login100" style="background-color: transparent;">
+
+        <form class="login100-form validate-form" #f="ngForm" (ngSubmit)="signIn(f.value)">
+
+            <div class="wrap-input100 validate-input m-b-26" data-validate="Email is required">
+                <label for="email" style="color:#fff;font-weight: bold;">Email address</label>
+                <span class="label-input100">Email</span>
+                <input class="input100" type="text" placeholder="Email address" data-val="true" id="email" ngModel
+                    name="email" style="border-radius: 10px;">
+            </div>
+
+            <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                <label style="color:#fff;font-weight: bold;" for="password">Password</label>
+                <span class="label-input100">Password</span>
+                <input class="input100" placeholder="password" type="password" id="password" ngModel name="password"
+                    style="border-radius: 10px;">
+            </div>
+
+            <div *ngIf="invalidLogIn" class="alert alert-danger">email or password is invalid</div>
+            <div *ngIf="!isActive" class="alert alert-danger">Sorry ,You don`t have permission to login</div>
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn" type="submit" style="border-radius: 10px;">
+                    Sign in
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
